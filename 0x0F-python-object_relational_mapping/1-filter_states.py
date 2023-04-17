@@ -8,14 +8,22 @@ is list in this script from database 'hbtn_0e_0_usa`.
 import MySQLdb
 import sys
 
-# Access the database and get states
-db = MySQLdb.connect(host="localhost", user=sys.argv[1], port=3306,
-                     passwd=sys.argv[2], db=sys.argv[3])
+if __name__ == '__main__':
+    # Connect to MySQL server
+    conn = MySQLdb.connect(
+        host='localhost',
+        port=3306,
+        user=sys.argv[1],
+        passwd=sys.argv[2],
+        db=sys.argv[3],
+    )
 
-# Execute query to get states whose name starts with 'N'
-cur = db.cursor()
-cur.execute("SELECT * FROM states WHERE name LIKE BINARY 'N%' ORDER BY states.id ASC")
+    # Query should be executed to get states that begin with the letter 'N'
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
 
-# Print results
-[print(row) for row in cur.fetchall()]
+    for row in cur.fetchall():
+        print(row)
+    cur.close()
+    conn.close()
 
