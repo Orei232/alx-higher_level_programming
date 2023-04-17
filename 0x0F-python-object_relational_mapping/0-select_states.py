@@ -6,18 +6,21 @@ This script contains the list of all states from database
 """
 
 import MySQLdb
-from sys import argv
+import sys
 
 if __name__ == '__main__':
-    """
-    Get access to the database and display the states.
-    """
-    db = MySQLdb.connect(host="localhost", user=argv[1], port=3306,
-                         passwd=argv[2], db=argv[3])
+    # Connect to MySQL server
+    conn = MySQLdb.connect(host='localhost', port=3306, user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
 
-    cur = db.cursor()
-    cur.execute("SELECT * FROM states")
-    rows = cur.fetchall()
+    # Execute query to get all states
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM states ORDER BY states.id ASC")
 
-    for row in rows:
+    # Print results
+    for row in cur.fetchall():
         print(row)
+
+    # Close database connection
+    cur.close()
+    conn.close()
+
